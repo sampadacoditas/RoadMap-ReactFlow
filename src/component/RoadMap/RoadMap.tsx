@@ -172,6 +172,75 @@ const OverviewFlow = () => {
   //   ]);
   // }, []);
 
+  useEffect(() => {
+    const onChange = (event: any) => {
+      setNodes((nds) =>
+        nds.map((node) => {
+          if (node.id !== '2') {
+            return node;
+          }
+
+          const color = event.target.value;
+
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              color,
+            },
+          };
+        }),
+      );
+    };
+    setNodes([
+      ...nodes,
+      {
+        id: '1',
+        type: 'custom',
+        // data: { onChange: onChange },
+        data: { label: 'An input node' },
+        style: {
+          border: '1px solid #777',
+          padding: 10,
+          backgroundColor: 'yellow',
+        },
+        position: { x: 250, y: 0 },
+        sourcePosition: Position.Left,
+      },
+      {
+        id: '5',
+        // type: 'output',
+        // type: 'custom',
+        // data: { onChange: onChange },
+        data: { label: 'An input node' },
+        style: {
+          border: '1px solid #777',
+          padding: 10,
+          backgroundColor: '#FF8000',
+        },
+        position: { x: 500, y: 100 },
+        targetPosition: Position.Left,
+      },
+    ]);
+
+    setEdges([
+      ...edges,
+      {
+        id: 'e1-4',
+        source: '1',
+        target: '4',
+        sourceHandle: 'a',
+        animated: true,
+      },
+      {
+        id: 'e1-5',
+        source: '1',
+        target: '5',
+        sourceHandle: 'b',
+        animated: true,
+      },
+    ]);
+  }, []);
   return (
     <ReactFlow
       nodes={nodes}

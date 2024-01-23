@@ -24,24 +24,24 @@
 import React from 'react';
 import { MarkerType, Position } from 'reactflow';
 
-
 export const nodes: any = [
   {
     id: '1',
-    type: 'selectorNode',
+    type: 'custom',
     // type: 'input',
     data: {
       label: 'Input Node',
     },
     position: { x: 250, y: 0 },
-    sourcePosition: Position.Left,
-    targetPosition: Position.Right,
+    // sourcePosition: Position.Left,
+    // targetPosition: Position.Right,
   },
   {
     id: '2',
     data: {
       label: 'Default Node',
     },
+    style: { backgroundColor: 'yellow' },
     position: { x: 100, y: 100 },
   },
   {
@@ -50,6 +50,7 @@ export const nodes: any = [
     data: {
       label: 'Output Node',
     },
+    style: { backgroundColor: 'yellow' },
     // position: { x: 400, y: 100 },
     position: { x: 100, y: 200 },
   },
@@ -57,9 +58,10 @@ export const nodes: any = [
     id: '4',
     type: 'output',
     data: {
-      label: 'Output Node',
+      label: 'Output Node1',
     },
-    position: { x: 400, y: 100 },
+    style: { backgroundColor: '#FF8000' },
+    position: { x: 500, y: -100 },
     targetPosition: Position.Left,
     // position: { x: 100, y: 200 },
   },
@@ -109,7 +111,7 @@ export const nodes: any = [
 export const edges = [
   { id: 'e1-2', source: '1', target: '2', type: 'smoothstep' },
   { id: 'e1-3', source: '2', target: '3', animated: true },
-  { id: 'e1-4', source: '1', target: '4', animated: true },
+  // { id: 'e1-4', source: '1', target: '4', animated: true },
   // {
   //   id: 'e4-5',
   //   source: '4',
