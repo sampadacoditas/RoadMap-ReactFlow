@@ -31,6 +31,6 @@ export const nodes = [
 ];
 
 export const edges = [
-  { id: 'e1-2', source: '1', target: '2', type: 'smoothstep' },
+  { id: 'e1-2', source: '1', target: '2', type: TYPES.SMOOTHSTEP },
   { id: 'e1-3', source: '2', target: '3', animated: true },
 ];
