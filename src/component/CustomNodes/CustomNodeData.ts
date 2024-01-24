@@ -1,4 +1,9 @@
+import classes from './CustomNode.module.scss';
+
 export const handleIds = [
-    { id: '1', style: { top: 10, background: '#555' } },
-    { id: '2', style: { bottom: 10, top: 'auto', background: '#555' } },
-  ];
+  { id: '1', className: classes.handle1 },
+  {
+    id: '2',
+    className: classes.handle1,
+  },
+];

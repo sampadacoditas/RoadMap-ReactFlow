@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Handle, Position } from 'reactflow';
 import { ICustomNode } from './ICustomNode';
 import { handleIds } from './CustomNodeData';
+import classses from './CustomNode.module.scss';
 
 const CustomNode = (props: ICustomNode) => {
   const { data } = props;
@@ -11,17 +12,17 @@ const CustomNode = (props: ICustomNode) => {
       <Handle
         type="source"
         position={Position.Left}
-        style={{ background: '#555' }}
+        className={classses.hanel1}
       />
       <div>{data.label}</div>
-      {handleIds.map((item: { id: string; style: {} }) => {
+      {handleIds.map((item: { id: string; className: any }) => {
         return (
           <Fragment>
             <Handle
               type="source"
               position={Position.Right}
               id={item.id}
-              style={item.style}
+              className={item.className}
             />
           </Fragment>
         );
