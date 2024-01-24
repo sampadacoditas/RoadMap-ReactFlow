@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -11,15 +11,61 @@ import CustomNode from '../CustomNodes/CustomNodes';
 import 'reactflow/dist/style.css';
 import classes from './RoadMap.module.scss';
 import { TYPES } from '../../constants';
-
-const nodeTypes = {
-  custom: CustomNode,
-};
+// @ts-ignore
 
 const OverviewFlow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState<any>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [deleteIcon, setDeleteIcon] = useState<boolean>(false);
+  const [nodeTypes, setNodeTypes] = useState<any>({
+    custom: '',
+  });
 
+  const CustomNodes = memo(({ data }: any) => {
+    return <CustomNode data={data} deleteIcon={deleteIcon} />;
+  });
+
+  useEffect(() => {
+    setNodeTypes({ custom: CustomNodes });
+  }, [deleteIcon]);
+
+  const handleAddPrimaryNode = () => {
+    const newNodeId = String(nodes.length + 1);
+
+    setNodes([
+      ...nodes,
+      {
+        id: newNodeId,
+        type: TYPES.CUSTOM,
+        data: { label: `Primary Node ${newNodeId}` },
+        className: `${classes.customNode}`,
+        position: { x: 100, y: 100 },
+        sourcePosition: Position.Left,
+      },
+    ]);
+  };
+  const handleAddSecondaryNode = () => {
+    const newNodeId = String(nodes.length + 1);
+    setNodes([
+      ...nodes,
+      {
+        id: newNodeId,
+        data: { label: `Secondary Node ${newNodeId}` },
+        className: `${classes.childNode}`,
+        position: { x: 300, y: 200 },
+        targetPosition: Position.Left,
+      },
+    ]);
+  };
+  const handleDeleteNode = (nodeId: any) => {
+    const updatedNodes = nodes.filter((node) => node.id !== nodeId);
+    const updatedEdges = edges.filter(
+      (edge) => edge.source !== nodeId && edge.target !== nodeId,
+    );
+
+    setNodes(updatedNodes);
+    setEdges(updatedEdges);
+  };
   const addNodeEdges = () => {
     setNodes([
       ...nodes,
@@ -57,22 +103,39 @@ const OverviewFlow = () => {
       },
     ]);
   };
+
+  const handleMouseEnter = () => {
+    setDeleteIcon(true);
+  };
+  const handleMouseLeave = () => {
+    setDeleteIcon(false);
+  };
   useEffect(() => {
     addNodeEdges();
   }, []);
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      fitView
-      nodeTypes={nodeTypes}
-    >
-      <MiniMap zoomable pannable />
-      <Controls />
-    </ReactFlow>
+    <>
+      <div className={classes.buttons}>
+        <button onClick={handleAddPrimaryNode}>Add Primary Node</button>
+        <button onClick={handleAddSecondaryNode}>Add Secondary Node</button>
+        <button onClick={() => handleDeleteNode('1')}>Delete Node</button>
+      </div>
+
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        fitView
+        nodeTypes={nodeTypes}
+        onNodeMouseEnter={handleMouseEnter}
+        onNodeMouseLeave={handleMouseLeave}
+      >
+        <MiniMap zoomable pannable />
+        <Controls />
+      </ReactFlow>
+    </>
   );
 };
 

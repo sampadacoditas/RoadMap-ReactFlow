@@ -12,6 +12,7 @@ export const nodes = [
   {
     id: '3',
     type: TYPES.OUTPUT,
+    // type: TYPES.CUSTOM,
     data: {
       label: 'CSS',
     },

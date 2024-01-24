@@ -7,10 +7,9 @@ import RoadMap from './component/RoadMap/RoadMap';
 function App() {
   return (
     <div className="App">
-      <div style={{width:'100%',height:'100vh'}}>
-      <RoadMap/>
+      <div style={{ width: '100%', height: '100vh' }}>
+        <RoadMap />
       </div>
-    
     </div>
   );
 }

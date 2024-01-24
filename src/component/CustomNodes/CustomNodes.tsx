@@ -4,17 +4,20 @@ import { ICustomNode } from './ICustomNode';
 import { handleIds } from './CustomNodeData';
 import classses from './CustomNode.module.scss';
 import { TYPES } from '../../constants';
+// @ts-ignore
+import { MdDelete } from 'react-icons/md';
 
 const CustomNode = (props: ICustomNode) => {
-  const { data } = props;
+  const { data, deleteIcon } = props;
 
   return (
-    <Fragment>
+    <>
       <Handle
         type={TYPES.SOURCE}
-        position={Position.Left}
+        position={Position.Top}
         className={classses.hanel1}
       />
+      {deleteIcon && <MdDelete />}
       <div>{data.label}</div>
       {handleIds.map((item: { id: string; className: string }) => {
         return (
@@ -28,7 +31,7 @@ const CustomNode = (props: ICustomNode) => {
           </Fragment>
         );
       })}
-    </Fragment>
+    </>
   );
 };
 
