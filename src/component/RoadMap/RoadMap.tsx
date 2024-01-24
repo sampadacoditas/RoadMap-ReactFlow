@@ -10,6 +10,7 @@ import { nodes as initialNodes, edges as initialEdges } from './data';
 import CustomNode from '../CustomNodes/CustomNodes';
 import 'reactflow/dist/style.css';
 import classes from './RoadMap.module.scss';
+import { TYPES } from '../../constants';
 
 const nodeTypes = {
   custom: CustomNode,
@@ -24,7 +25,7 @@ const OverviewFlow = () => {
       ...nodes,
       {
         id: '1',
-        type: 'custom',
+        type: TYPES.CUSTOM,
         data: { label: 'Internet' },
         className: `${classes.customNode}`,
         position: { x: 250, y: 0 },

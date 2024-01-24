@@ -1,14 +1,6 @@
 import { Position } from 'reactflow';
-
+import { TYPES } from '../../constants';
 export const nodes = [
-  {
-    id: '1',
-    type: 'custom',
-    data: {
-      label: 'Input Node',
-    },
-    position: { x: 250, y: 0 },
-  },
   {
     id: '2',
     data: {
@@ -19,7 +11,7 @@ export const nodes = [
   },
   {
     id: '3',
-    type: 'output',
+    type: TYPES.OUTPUT,
     data: {
       label: 'CSS',
     },
@@ -28,9 +20,9 @@ export const nodes = [
   },
   {
     id: '4',
-    type: 'output',
+    type: TYPES.OUTPUT,
     data: {
-      label: 'Output Node1',
+      label: 'searching the data',
     },
     style: { backgroundColor: '#FF8000' },
     position: { x: 500, y: -100 },
