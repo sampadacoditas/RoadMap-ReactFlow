@@ -1,43 +1,35 @@
-import { clearConfigCache } from 'prettier';
-import React, { memo, ChangeEvent, FC } from 'react';
+import { Fragment } from 'react';
 import { Handle, Position } from 'reactflow';
+import { ICustomNode } from './ICustomNode';
+import { handleIds } from './CustomNodeData';
+import classses from './CustomNode.module.scss';
+import { TYPES } from '../../constants';
 
-const CustomNode: FC<any> = memo(({ data, isConnectable }) => {
-  console.log('hello', isConnectable);
+const CustomNode = (props: ICustomNode) => {
+  const { data } = props;
+
   return (
-    <>
+    <Fragment>
       <Handle
-        type="source"
+        type={TYPES.SOURCE}
         position={Position.Left}
-        style={{ background: '#555' }}
-        // onConnect={(params) => console.log('handle onConnect', params)}
-        // isConnectable={isConnectable}
+        className={classses.hanel1}
       />
-      <div>Custom Color Picker Node:</div>
-
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="a"
-        style={{ top: 10, background: '#555' }}
-        // isConnectable={isConnectable}
-      />
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="b"
-        style={{ bottom: 10, top: 'auto', background: '#555' }}
-        // isConnectable={isConnectable}
-      />
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="c"
-        style={{ top: 35, bottom: 10, background: '#555' }}
-        // isConnectable={isConnectable}
-      />
-    </>
+      <div>{data.label}</div>
+      {handleIds.map((item: { id: string; className: string }) => {
+        return (
+          <Fragment>
+            <Handle
+              type={TYPES.SOURCE}
+              position={Position.Right}
+              id={item.id}
+              className={item.className}
+            />
+          </Fragment>
+        );
+      })}
+    </Fragment>
   );
-});
+};
 
 export default CustomNode;
