@@ -13,7 +13,7 @@ interface CustomNodePositionAbsolute {
 }
 
 export interface CustomNodeData {
-  label: string;
+  label?: string;
   options?: {
     type?: string;
     position?: string;
@@ -32,7 +32,7 @@ export interface INode {
     | TYPES.SMOOTHSTEP
     | TYPES.SOURCE
     | TYPES.TARGET;
-  data: CustomNodeData;
+  data?: CustomNodeData;
   className?: string;
   position?: CustomNodePositionAbsolute;
 }

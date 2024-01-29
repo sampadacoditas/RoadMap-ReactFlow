@@ -7,26 +7,29 @@ import ReactFlow, {
   Position,
   addEdge,
   NodeMouseHandler,
+  NodeProps,
 } from 'reactflow';
+// Importing initial node and edge data along with custom node component
 import { nodes as initialNodes, edges as initialEdges } from './data';
 import CustomNode from '../CustomNodes/CustomNodes';
 import 'reactflow/dist/style.css';
 import classes from './RoadMap.module.scss';
 import { NODE_TYPES, TYPES } from '../../constants';
-import { CustomNodeData, INode, IParams } from './IRoadMap';
+import { IParams } from './IRoadMap';
 
 const RoadMap = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState<any>(initialNodes);
+  // State for managing nodes, edges, delete icon visibility, and other variables
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [deleteIcon, setDeleteIcon] = useState<boolean>(false);
   const [hoveredNodeId, setHoveredNodeId] = useState<string | any>();
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>(false);
   const [doubleClickedNode, setIsDoubleClickedNode] = useState<any>();
-  const [nodeTypes, setNodeTypes] = useState<{ custom: string | any }>({
+  const [nodeTypes, setNodeTypes] = useState<{ custom: string } | any>({
     custom: '',
   });
   const [nodeId, setNodeId] = useState(nodes.length + 1);
-
+  // Memoized rendering of custom nodes
   const renderCustomNodes = memo(({ data }: { data: any }) => {
     return (
       <CustomNode
@@ -56,6 +59,7 @@ const RoadMap = () => {
     setNodeTypes({ custom: renderCustomNodes });
   }, [deleteIcon, hoveredNodeId, isDoubleClicked]);
 
+  // Function to add a primary node to the graph
   const handleAddPrimaryNode = () => {
     const newNodeId = String(Number(nodes[nodes.length - 1].id) + 1);
 
@@ -68,7 +72,6 @@ const RoadMap = () => {
           label: `Primary Node ${newNodeId}`,
           id: newNodeId,
           nodeType: NODE_TYPES.PRIMARY,
-          edges: edges,
           options: [
             { type: TYPES.SOURCE, position: Position.Left, id: '1' },
             { type: TYPES.TARGET, position: Position.Right, id: '2' },
@@ -79,6 +82,8 @@ const RoadMap = () => {
       },
     ]);
   };
+
+  // Function to add a secondary node to the graph
   const handleAddSecondaryNode = () => {
     const newNodeId = String(Number(nodes[nodes.length - 1].id) + 1);
 
@@ -101,6 +106,8 @@ const RoadMap = () => {
       },
     ]);
   };
+
+  // Function to delete a node and its associated edges
   const handleDeleteNode = (nodeId: string) => {
     const updatedNodes = nodes.filter((node) => node.id !== nodeId);
     const updatedEdges = edges.filter(
@@ -110,6 +117,7 @@ const RoadMap = () => {
     setEdges(updatedEdges);
   };
 
+  // Callback function for handling edge connections
   const onConnect = useCallback(
     (params: IParams) => {
       console.log(params);

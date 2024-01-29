@@ -1,10 +1,11 @@
 import { Fragment, useState } from 'react';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position, NodeResizer, NodeResizeControl } from 'reactflow';
 import classes from './CustomNode.module.scss';
 import { MdDelete } from 'react-icons/md';
 import { NODE_TYPES } from '../../constants';
 import { ICustomNode } from './ICustomNode';
 
+// CustomNode component which represents a node in the flow chart
 const CustomNode = (props: ICustomNode) => {
   const {
     data,
@@ -19,7 +20,6 @@ const CustomNode = (props: ICustomNode) => {
   } = props;
 
   const { label, options, id, nodeType } = data;
-
 
   const [labelData, setLabelData] = useState(label);
 
@@ -36,9 +36,12 @@ const CustomNode = (props: ICustomNode) => {
       handleSubmit();
     }
   };
+
   return (
     <Fragment>
-      { hoveredNodeId === id && deleteIcon && (
+      <NodeResizer minWidth={100} minHeight={50} />
+
+      {hoveredNodeId === id && deleteIcon && (
         <MdDelete
           onClick={() => handleDeleteNode(id)}
           className={classes.delete}

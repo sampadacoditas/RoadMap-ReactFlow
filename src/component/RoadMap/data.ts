@@ -37,7 +37,7 @@ export const nodes = [
     type: TYPES.CUSTOM,
     data: {
       label: 'searching the data',
-      options: [{ type: TYPES.TARGET, position: Position.Left }],
+      options: [{ type: TYPES.TARGET, position: Position.Left, id: '1' }],
       id: '4',
       nodeType: NODE_TYPES.SECONDARY,
     },
