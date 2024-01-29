@@ -3,8 +3,9 @@ import { Handle, Position } from 'reactflow';
 import classes from './CustomNode.module.scss';
 import { MdDelete } from 'react-icons/md';
 import { NODE_TYPES } from '../../constants';
+import { ICustomNode } from './ICustomNode';
 
-const CustomNode = (props: any) => {
+const CustomNode = (props: ICustomNode) => {
   const {
     data,
     deleteIcon,
@@ -15,9 +16,10 @@ const CustomNode = (props: any) => {
     setIsDoubleClicked,
     updateNodeData,
     onConnect,
-    edges,
   } = props;
+
   const { label, options, id, nodeType } = data;
+
 
   const [labelData, setLabelData] = useState(label);
 
@@ -36,7 +38,7 @@ const CustomNode = (props: any) => {
   };
   return (
     <Fragment>
-      {hoveredNodeId === id && deleteIcon && (
+      { hoveredNodeId === id && deleteIcon && (
         <MdDelete
           onClick={() => handleDeleteNode(id)}
           className={classes.delete}
@@ -67,7 +69,6 @@ const CustomNode = (props: any) => {
               id={id}
               className={className}
               onConnect={(params) => onConnect(params)}
-              // edges={edges}
             />
           </Fragment>
         );

@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useState } from 'react';
+import { Fragment, memo, useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -6,27 +6,28 @@ import ReactFlow, {
   useEdgesState,
   Position,
   addEdge,
+  NodeMouseHandler,
 } from 'reactflow';
 import { nodes as initialNodes, edges as initialEdges } from './data';
 import CustomNode from '../CustomNodes/CustomNodes';
 import 'reactflow/dist/style.css';
 import classes from './RoadMap.module.scss';
 import { NODE_TYPES, TYPES } from '../../constants';
-
+import { CustomNodeData, INode, IParams } from './IRoadMap';
 
 const RoadMap = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState<any>(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [deleteIcon, setDeleteIcon] = useState<boolean>(false);
-  const [hoveredNodeId, setHoveredNodeId] = useState();
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | any>();
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>(false);
   const [doubleClickedNode, setIsDoubleClickedNode] = useState<any>();
-  const [nodeTypes, setNodeTypes] = useState<any>({
+  const [nodeTypes, setNodeTypes] = useState<{ custom: string | any }>({
     custom: '',
   });
+  const [nodeId, setNodeId] = useState(nodes.length + 1);
 
-  const renderCustomNodes = memo(({ data }: any) => {
-    console.log(data);
+  const renderCustomNodes = memo(({ data }: { data: any }) => {
     return (
       <CustomNode
         data={data}
@@ -36,16 +37,14 @@ const RoadMap = () => {
         doubleClickedNode={doubleClickedNode}
         isDoubleClicked={isDoubleClicked}
         setIsDoubleClicked={setIsDoubleClicked}
-        setNodes={setNodes}
         updateNodeData={updateNodeData}
         onConnect={onConnect}
-        edges={edges}
       />
     );
   });
 
-  const updateNodeData = (value: any, id: string) => {
-    const updatedNodes = nodes.map((node: any) => {
+  const updateNodeData = (value: string, id: string) => {
+    const updatedNodes = nodes.map((node) => {
       return node.id === id
         ? { ...node, data: { ...node.data, label: value } }
         : node;
@@ -58,7 +57,7 @@ const RoadMap = () => {
   }, [deleteIcon, hoveredNodeId, isDoubleClicked]);
 
   const handleAddPrimaryNode = () => {
-    const newNodeId = String(nodes.length + 1);
+    const newNodeId = String(Number(nodes[nodes.length - 1].id) + 1);
 
     setNodes([
       ...nodes,
@@ -77,12 +76,12 @@ const RoadMap = () => {
         },
         className: `${classes.customNode}`,
         position: { x: 100, y: 100 },
-        sourcePosition: Position.Left,
       },
     ]);
   };
   const handleAddSecondaryNode = () => {
-    const newNodeId = String(nodes.length + 1);
+    const newNodeId = String(Number(nodes[nodes.length - 1].id) + 1);
+
     setNodes([
       ...nodes,
       {
@@ -99,11 +98,10 @@ const RoadMap = () => {
         },
         className: `${classes.childNode}`,
         position: { x: 300, y: 200 },
-        targetPosition: Position.Left,
       },
     ]);
   };
-  const handleDeleteNode = (nodeId: any) => {
+  const handleDeleteNode = (nodeId: string) => {
     const updatedNodes = nodes.filter((node) => node.id !== nodeId);
     const updatedEdges = edges.filter(
       (edge) => edge.source !== nodeId && edge.target !== nodeId,
@@ -113,7 +111,8 @@ const RoadMap = () => {
   };
 
   const onConnect = useCallback(
-    (params: any) => {
+    (params: IParams) => {
+      console.log(params);
       return setEdges((eds) => addEdge(params, eds));
     },
 
@@ -137,7 +136,6 @@ const RoadMap = () => {
         },
         className: `${classes.customNode}`,
         position: { x: 250, y: 0 },
-        sourcePosition: Position.Left,
       },
       {
         id: '5',
@@ -152,6 +150,7 @@ const RoadMap = () => {
         position: { x: 500, y: 100 },
       },
     ]);
+
     setEdges([
       ...edges,
       {
@@ -171,12 +170,18 @@ const RoadMap = () => {
     ]);
   };
 
-  const handleNodeOnclick = (event: any, node: any) => {
+  const handleNodeOnclick: NodeMouseHandler = (
+    event: React.MouseEvent,
+    node,
+  ) => {
     setDeleteIcon(true);
-    setHoveredNodeId(node.id);
+    node && setHoveredNodeId(node.id);
   };
 
-  const handleDoubleClick = (event: any, clickednode: any) => {
+  const handleDoubleClick: NodeMouseHandler = (
+    event: React.MouseEvent,
+    clickednode,
+  ) => {
     const updatedNodes = nodes.filter((node) => node.id === clickednode.id);
     setIsDoubleClicked(true);
     setIsDoubleClickedNode(updatedNodes[0]);
@@ -187,7 +192,7 @@ const RoadMap = () => {
   }, []);
 
   return (
-    <>
+    <Fragment>
       <div className={classes.buttons}>
         <button onClick={handleAddPrimaryNode}>Add Primary Node</button>
         <button onClick={handleAddSecondaryNode}>Add Secondary Node</button>
@@ -207,7 +212,7 @@ const RoadMap = () => {
         <MiniMap zoomable pannable />
         <Controls />
       </ReactFlow>
-    </>
+    </Fragment>
   );
 };
 

@@ -8,8 +8,8 @@ export const nodes = [
     data: {
       label: 'HTML',
       options: [
-        { type: TYPES.TARGET, position: Position.Top, id: 1 },
-        { type: TYPES.SOURCE, position: Position.Bottom, id: 2 },
+        { type: TYPES.TARGET, position: Position.Top, id: '1' },
+        { type: TYPES.SOURCE, position: Position.Bottom, id: '2' },
       ],
       id: '2',
       nodeType: NODE_TYPES.PRIMARY,
@@ -22,7 +22,10 @@ export const nodes = [
     type: TYPES.CUSTOM,
     data: {
       label: 'CSS',
-      options: [{ type: TYPES.TARGET, position: Position.Top }],
+      options: [
+        { type: TYPES.TARGET, position: Position.Top, id: '1' },
+        { type: TYPES.SOURCE, position: Position.Bottom, id: '2' },
+      ],
       id: '3',
       nodeType: NODE_TYPES.PRIMARY,
     },
@@ -40,7 +43,6 @@ export const nodes = [
     },
     className: `${classes.childNode}`,
     position: { x: 500, y: -100 },
-    targetPosition: Position.Left,
   },
 ];
 
@@ -52,5 +54,5 @@ export const edges = [
     sourceHandle: '1',
     type: TYPES.SMOOTHSTEP,
   },
-  { id: 'e2-3', source: '2', target: '3' },
+  { id: 'e2-3', source: '2', target: '3', type: 'default' },
 ];
