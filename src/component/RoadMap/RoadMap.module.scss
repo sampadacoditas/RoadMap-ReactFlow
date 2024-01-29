@@ -2,15 +2,14 @@
   border: 0.063rem solid #777;
   padding: 0.625rem;
   background-color: yellow;
-  width: 7rem;
-  position: relative;
+  width: fit-content;
+  border-radius: 0.2rem;
 }
 
 .childNode {
   border: 0.063rem solid #777;
   padding: 0.625rem;
-  background-color: #ff8000;
-  // position: relative;
+  background-color: #ff8000 !important;
 }
 
 .buttons {
