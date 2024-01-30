@@ -1,4 +1,4 @@
-import { TYPES } from './../../constants';
+import { NODE_TYPES, TYPES } from './../../constants';
 
 export interface IParams {
   source: string | null;
@@ -13,15 +13,14 @@ interface CustomNodePositionAbsolute {
 }
 
 export interface CustomNodeData {
-  label?: string;
+  label: string;
   options?: {
     type?: string;
     position?: string;
     id?: string;
   }[];
-  id?: string;
-  nodeType?: string;
-  edges?: any;
+  id: string;
+  nodeType: NODE_TYPES.PRIMARY | NODE_TYPES.SECONDARY;
 }
 
 export interface INode {

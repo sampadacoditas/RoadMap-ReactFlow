@@ -1,23 +1,27 @@
+import { NodeTypes } from 'reactflow';
+import { NODE_TYPES } from '../../constants';
+import { IParams } from '../RoadMap/IRoadMap';
+
 export interface ICustomNode {
   data: {
     label: string;
     options?: TOption[];
     id: string;
-    nodeType: any;
+    nodeType: NODE_TYPES.PRIMARY | NODE_TYPES.SECONDARY | NodeTypes;
   };
-  deleteIcon: any;
-  hoveredNodeId: string;
+  deleteIcon: boolean;
+  hoveredNodeId?: string;
   handleDeleteNode: (id: string) => void;
   doubleClickedNode: undefined | any;
   isDoubleClicked: boolean;
-  setIsDoubleClicked: any;
+  setIsDoubleClicked: React.Dispatch<React.SetStateAction<boolean>>;
   updateNodeData: (value: string, id: string) => void;
-  onConnect: (params: any) => void;
+  onConnect: (params: IParams) => void;
 }
 
-type TOption = {
+export interface TOption {
   type?: string;
   position?: string;
   id?: string;
   className?: string;
-};
+}

@@ -8,6 +8,7 @@ import ReactFlow, {
   addEdge,
   NodeMouseHandler,
   NodeProps,
+  NodeTypes,
 } from 'reactflow';
 // Importing initial node and edge data along with custom node component
 import { nodes as initialNodes, edges as initialEdges } from './data';
@@ -15,27 +16,25 @@ import CustomNode from '../CustomNodes/CustomNodes';
 import 'reactflow/dist/style.css';
 import classes from './RoadMap.module.scss';
 import { NODE_TYPES, TYPES } from '../../constants';
-import { IParams } from './IRoadMap';
+import { CustomNodeData, IParams } from './IRoadMap';
 
 const RoadMap = () => {
   // State for managing nodes, edges, delete icon visibility, and other variables
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [deleteIcon, setDeleteIcon] = useState<boolean>(false);
-  const [hoveredNodeId, setHoveredNodeId] = useState<string | any>();
+  const [hoveredNodeId, setHoveredNodeId] = useState<string>();
   const [isDoubleClicked, setIsDoubleClicked] = useState<boolean>(false);
   const [doubleClickedNode, setIsDoubleClickedNode] = useState<any>();
-  const [nodeTypes, setNodeTypes] = useState<{ custom: string } | any>({
-    custom: '',
-  });
-  const [nodeId, setNodeId] = useState(nodes.length + 1);
+  const [nodeTypes, setNodeTypes] = useState<NodeTypes>();
+
   // Memoized rendering of custom nodes
-  const renderCustomNodes = memo(({ data }: { data: any }) => {
+  const renderCustomNodes = memo(({ data }: { data: CustomNodeData }) => {
     return (
       <CustomNode
         data={data}
         deleteIcon={deleteIcon}
-        hoveredNodeId={hoveredNodeId}
+        hoveredNodeId={hoveredNodeId && hoveredNodeId}
         handleDeleteNode={handleDeleteNode}
         doubleClickedNode={doubleClickedNode}
         isDoubleClicked={isDoubleClicked}
@@ -120,7 +119,6 @@ const RoadMap = () => {
   // Callback function for handling edge connections
   const onConnect = useCallback(
     (params: IParams) => {
-      console.log(params);
       return setEdges((eds) => addEdge(params, eds));
     },
 
@@ -191,6 +189,7 @@ const RoadMap = () => {
     clickednode,
   ) => {
     const updatedNodes = nodes.filter((node) => node.id === clickednode.id);
+    console.log(updatedNodes[0]);
     setIsDoubleClicked(true);
     setIsDoubleClickedNode(updatedNodes[0]);
   };
