@@ -189,7 +189,6 @@ const RoadMap = () => {
     clickednode,
   ) => {
     const updatedNodes = nodes.filter((node) => node.id === clickednode.id);
-    console.log(updatedNodes[0]);
     setIsDoubleClicked(true);
     setIsDoubleClickedNode(updatedNodes[0]);
   };
